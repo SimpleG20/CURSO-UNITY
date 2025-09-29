@@ -2,15 +2,27 @@ using UnityEngine;
 
 public class Chaser : BaseEnemy
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override void Setup()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void UpdateLogic()
     {
-        
+    }
+
+    protected override void Walk()
+    {
+    }
+
+    public override void Attack()
+    {
+    }
+
+    public override void TakeDamage()
+    {
+    }
+
+    protected override void Die()
+    {
     }
 }

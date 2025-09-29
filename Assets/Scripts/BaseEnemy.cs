@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class BaseEnemy : BaseCharacter
+public abstract class BaseEnemy : BaseCharacter
 {
-    public void Test()
+    private void Update()
     {
-        m_health = 0;
+        UpdateLogic();
     }
+    protected abstract void UpdateLogic();
 }

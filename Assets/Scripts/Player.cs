@@ -2,9 +2,21 @@ using UnityEngine;
 
 public class Player : BaseCharacter
 {
-    public void Test()
+    protected override void Setup()
     {
-        var enemy = new BaseEnemy();
-        enemy.m_health = 0;
+    }
+    protected override void Walk()
+    {
+    }
+
+    public override void Attack()
+    {
+    }
+    public override void TakeDamage()
+    {
+    }
+
+    protected override void Die()
+    {
     }
 }

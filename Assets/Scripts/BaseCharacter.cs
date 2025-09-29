@@ -2,35 +2,22 @@ using UnityEngine;
 
 public abstract class BaseCharacter : MonoBehaviour
 {
-    private string m_name;
-    public int m_health;
-    private float m_speed;
-    private float m_strength;
-    private bool m_isAlive;
+    public string Name { get; protected set; }
+    public int Health { get; protected set; }
 
-    internal bool test;
+    [SerializeField] protected float m_speed;
+    [SerializeField] protected float m_strength;
+    [SerializeField] protected bool m_isAlive;
 
-    private void Walk()
+    protected void Awake()
     {
-
+        Setup();
     }
+    protected abstract void Setup();
 
-    private void Attack()
-    {
 
-    }
-
-    private void TakeDamage()
-    {
-
-    }
-}
-
-public class Test
-{
-    private BaseEnemy m_enemy;
-    private BaseCharacter m_ally;
-    public void Teste()
-    {
-    }
+    protected abstract void Walk();
+    public abstract void Attack();
+    public abstract void TakeDamage();
+    protected abstract void Die();
 }
