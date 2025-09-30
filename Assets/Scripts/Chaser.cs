@@ -13,12 +13,21 @@ public class Chaser : BaseEnemy
     protected override void Walk()
     {
     }
-
-    public override void Attack()
+    protected override bool CanWalk()
     {
+        return true;
     }
 
-    public override void TakeDamage()
+    protected override bool CanAttack()
+    {
+        return true;
+    }
+    protected override void Attack()
+    {
+        
+    }
+
+    public override void TakeDamage(int damage)
     {
     }
 
