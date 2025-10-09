@@ -7,23 +7,16 @@ public class Player : BaseCharacter
     [SerializeField] private PlayerInput m_playerInput;
     [SerializeField] private Transform m_attackPivot;
 
-    private InputAction m_walkAction;
-    private InputAction m_attackAction;
+    [SerializeField] private float m_pivotRotationSpeed = 180;
 
-    private bool m_rotatingPivot;
-    private float m_lastAttackTime;
+    private bool m_swordAnimation;
 
     protected override void Setup()
     {
-        m_playerInput.SwitchCurrentActionMap("Player");
-        m_playerInput.ActivateInput();
+        m_playerInput.actions["Move"].performed += ctx => m_MovementDirection = ctx.ReadValue<Vector2>();
+        m_playerInput.actions["Move"].canceled += ctx => m_MovementDirection = Vector2.zero;
 
-        m_walkAction = m_playerInput.actions["Move"];
-        m_attackAction = m_playerInput.actions["Attack"];
-
-        m_walkAction.performed += ctx => m_MovementDirection = ctx.ReadValue<Vector2>();
-        m_walkAction.canceled += ctx => m_MovementDirection = Vector2.zero;
-        m_attackAction.performed += ctx => Attack();
+        m_playerInput.actions["Attack"].performed += ctx => Attack();
     }
 
     protected override void UpdateLogic()
@@ -33,30 +26,53 @@ public class Player : BaseCharacter
             Walk();
         }
     }
+
     protected override bool CanWalk()
     {
-        if (!m_IsAlive) return false;
-        return true;
+        return m_MovementDirection != Vector2.zero;
     }
     protected override void Walk()
     {
-        if (m_MovementDirection == Vector2.zero) return;
-        transform.Translate(m_MovementDirection * m_Speed * Time.deltaTime, Space.World);
+        transform.Translate(m_MovementDirection * m_Speed * Time.deltaTime);
     }
 
+
+    public override void Attack()
+    {
+        if (!CanAttack()) return;
+
+        m_lastTimeAttacked = Time.time;
+
+        StartCoroutine(RotateSword());
+    }
     protected override bool CanAttack()
     {
-        if (m_rotatingPivot) return false;
-        if (Time.time - m_lastAttackTime < m_Cooldown) return false;
+        if (m_swordAnimation) return false;
+        if (Time.time - m_lastTimeAttacked < m_AttackCooldown) return false;
 
         return true;
     }
-    protected override void Attack()
+    private IEnumerator RotateSword()
     {
-        if (CanAttack() == false) return;
+        bool completedCycle = false;
+        m_swordAnimation = true;
+        while (!completedCycle)
+        {
+            if (m_attackPivot.rotation.eulerAngles.z >= 358)
+            {
+                m_swordAnimation = false;
+                completedCycle = true;
+                m_attackPivot.rotation = Quaternion.Euler(0, 0, 0);
+                yield break;
+            }
+            m_attackPivot.Rotate(Vector3.forward * m_pivotRotationSpeed * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+    }
 
-        m_lastAttackTime = Time.time;
-        StartCoroutine(RotatePivot());
+    protected override bool CanTakeDamage()
+    {
+        return true;
     }
     public override void TakeDamage(int damage)
     {
@@ -64,24 +80,5 @@ public class Player : BaseCharacter
 
     protected override void Die()
     {
-    }
-
-    private IEnumerator RotatePivot()
-    {
-        bool completedCycle = false;
-        m_rotatingPivot = true;
-        while (!completedCycle)
-        {
-            if (m_attackPivot.rotation.eulerAngles.z >= 358)
-            {
-                m_rotatingPivot = false;
-                completedCycle = true;
-                m_AttackTriggered = false;
-                m_attackPivot.rotation = Quaternion.Euler(0, 0, 0);
-                yield break;
-            }
-            m_attackPivot.Rotate(Vector3.forward * 180 * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
-        }
     }
 }
