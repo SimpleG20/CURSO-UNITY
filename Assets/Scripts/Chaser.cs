@@ -28,25 +28,16 @@ public class Chaser : BaseEnemy
     {
         transform.Translate(m_MovementDirection * m_Speed * Time.deltaTime);
     }
-    protected override bool CanWalk()
-    {
-        return true;
-    }
     protected override bool CanAttack()
     {
         return true;
     }
-
-    protected override bool CanAttack()
-    {
-        return true;
-    }
-    protected override void Attack()
+    public override void Attack()
     {
         
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage()
     {
     }
     protected override bool CanTakeDamage()

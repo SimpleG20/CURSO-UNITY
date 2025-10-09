@@ -74,7 +74,7 @@ public class Player : BaseCharacter
     {
         return true;
     }
-    public override void TakeDamage(int damage)
+    public override void TakeDamage()
     {
     }
 
