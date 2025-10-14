@@ -6,6 +6,12 @@ public class Chaser : BaseEnemy
 
     private Vector2 m_distanceFromPlayer;
 
+    protected override void Setup()
+    {
+        base.Setup();
+        Health = 75;
+    }
+
     protected override void UpdateLogic()
     {
         m_distanceFromPlayer = m_Player.transform.position - transform.position;
@@ -32,14 +38,7 @@ public class Chaser : BaseEnemy
     {
         return true;
     }
-    public override void Attack()
-    {
-        
-    }
 
-    public override void TakeDamage()
-    {
-    }
     protected override bool CanTakeDamage()
     {
         return true;
