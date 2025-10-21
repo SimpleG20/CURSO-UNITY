@@ -11,6 +11,7 @@ public class Sword : BaseWeapon
     public override bool CanUse()
     {
         if (m_Owner == null) return false;
+        if (!m_Active) return false;
         if (Time.time - m_LastAttackTime < m_AttackCooldown) return false;
         return !m_swordAnimation;
     }

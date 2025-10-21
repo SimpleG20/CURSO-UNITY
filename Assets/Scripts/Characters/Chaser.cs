@@ -44,7 +44,7 @@ public class Chaser : BaseEnemy
         return true;
     }
 
-    protected override void Die()
+    protected override void DieLogic()
     {
     }
 }

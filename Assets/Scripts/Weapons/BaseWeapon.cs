@@ -7,10 +7,15 @@ public abstract class BaseWeapon : MonoBehaviour
 
     protected float m_LastAttackTime = -Mathf.Infinity;
     protected BaseCharacter m_Owner;
+    protected bool m_Active = false;
 
     public void SetOwner(BaseCharacter owner)
     {
         m_Owner = owner;
+    }
+    public void SetActive(bool value)
+    {
+        m_Active = value;
     }
 
     public abstract bool CanUse();

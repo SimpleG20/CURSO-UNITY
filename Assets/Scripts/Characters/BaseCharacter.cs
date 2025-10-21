@@ -23,6 +23,7 @@ public abstract class BaseCharacter : MonoBehaviour
         }
 
         m_CurrentWeapon = m_Weapons[0];
+        m_CurrentWeapon.SetActive(true);
 
         Setup();
     }
@@ -61,5 +62,10 @@ public abstract class BaseCharacter : MonoBehaviour
         }
     }
 
-    protected abstract void Die();
+    protected void Die()
+    {
+        DieLogic();
+        Destroy(gameObject);
+    }
+    protected abstract void DieLogic();
 }
