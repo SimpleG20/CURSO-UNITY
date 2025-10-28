@@ -42,7 +42,7 @@ public class Player : BaseCharacter
         return true;
     }
 
-    protected override void Die()
+    protected override void DieLogic()
     {
     }
 }
