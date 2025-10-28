@@ -9,11 +9,11 @@ public abstract class BaseCharacter : MonoBehaviour
     [SerializeField] protected float m_Speed;
 
     [SerializeField] protected BaseWeapon[] m_Weapons;
-    [SerializeField] protected BaseWeapon m_CurrentWeapon;
 
     protected Vector2 m_MovementDirection;
+    protected BaseWeapon m_CurrentWeapon;
 
-    protected void Awake()
+    public void Initialize()
     {
         IsAlive = true;
 
@@ -21,9 +21,6 @@ public abstract class BaseCharacter : MonoBehaviour
         {
             m_Weapons[i].SetOwner(this);
         }
-
-        m_CurrentWeapon = m_Weapons[0];
-        m_CurrentWeapon.SetActive(true);
 
         Setup();
     }
@@ -40,13 +37,18 @@ public abstract class BaseCharacter : MonoBehaviour
     protected abstract bool CanWalk();
     protected abstract void Walk();
 
-    protected abstract bool CanAttack();
     public void Attack()
     {
         if (m_CurrentWeapon == null) return;
         if (!CanAttack()) return;
 
         m_CurrentWeapon.Use();
+    }
+    protected virtual bool CanAttack()
+    {
+        if (!m_CurrentWeapon.CanUse()) return false;
+
+        return true;
     }
 
     protected abstract bool CanTakeDamage();

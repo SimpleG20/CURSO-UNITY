@@ -10,10 +10,13 @@ public class Chaser : BaseEnemy
     {
         base.Setup();
         Health = 75;
+
+        m_CurrentWeapon = m_Weapons[0];
     }
 
     protected override void UpdateLogic()
     {
+        if (m_Player == null) return;
         m_distanceFromPlayer = m_Player.transform.position - transform.position;
 
         if (CanWalk())
@@ -34,17 +37,9 @@ public class Chaser : BaseEnemy
     {
         transform.Translate(m_MovementDirection * m_Speed * Time.deltaTime);
     }
-    protected override bool CanAttack()
-    {
-        return true;
-    }
 
     protected override bool CanTakeDamage()
     {
         return true;
-    }
-
-    protected override void DieLogic()
-    {
     }
 }
