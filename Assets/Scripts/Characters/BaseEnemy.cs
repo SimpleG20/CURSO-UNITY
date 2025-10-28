@@ -8,4 +8,9 @@ public abstract class BaseEnemy : BaseCharacter
     {
         m_Player = FindFirstObjectByType<Player>();
     }
+
+    protected override void DieLogic()
+    {
+        //GameplayManager.OnEnemyDied?.Invoke();
+    }
 }

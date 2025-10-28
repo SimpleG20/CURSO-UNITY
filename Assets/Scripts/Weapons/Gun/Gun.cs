@@ -1,10 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
 public class Gun : BaseWeapon
 {
     [SerializeField] private Bullet m_bulletPrefab;
-    [SerializeField] private Transform m_firePoint;
     [SerializeField] private int m_ammoCapacity = 12;
+    [SerializeField] private int m_bulletsPerShot = 1;
+
+    [SerializeField] private Transform m_firePoint;
 
     private int m_currentAmmo;
     private Quaternion m_gunDirection;
@@ -19,7 +22,7 @@ public class Gun : BaseWeapon
         if (!m_Active) return;
 
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = mousePosition - m_firePoint.position;
+        Vector2 direction = (mousePosition - m_Owner.transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         m_gunDirection = Quaternion.Euler(new Vector3(0, 0, angle));
         transform.rotation = m_gunDirection;
@@ -27,19 +30,26 @@ public class Gun : BaseWeapon
 
     public override bool CanUse()
     {
-        if (m_Owner == null) return false;
-        if (!m_Active) return false;
+        if (!base.CanUse()) return false;
+        if (m_bulletPrefab == null) return false;
         if (m_currentAmmo <= 0) return false;
-        if (Time.time - m_LastAttackTime < m_AttackCooldown) return false;
 
         return true;
     }
     public override void Use()
     {
-        m_currentAmmo--;
         m_LastAttackTime = Time.time;
-        var bullet = Instantiate(m_bulletPrefab, m_firePoint.position, m_gunDirection);
-        bullet.Setup(m_Damage);
+        StartCoroutine(InstantiateBullet());
+    }
+    private IEnumerator InstantiateBullet()
+    {
+        for (int i = 0; i < m_bulletsPerShot; i++)
+        {
+            m_currentAmmo--;
+            var bullet = Instantiate(m_bulletPrefab, m_firePoint.position, m_gunDirection);
+            bullet.Setup(m_Damage);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     public void Reload()
