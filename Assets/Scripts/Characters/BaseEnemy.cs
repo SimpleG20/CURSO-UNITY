@@ -11,6 +11,6 @@ public abstract class BaseEnemy : BaseCharacter
 
     protected override void DieLogic()
     {
-        //GameplayManager.OnEnemyDied?.Invoke();
+        GameplayManager.OnEnemyDied?.Invoke();
     }
 }

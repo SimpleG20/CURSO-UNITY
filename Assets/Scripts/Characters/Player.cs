@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -61,6 +60,6 @@ public class Player : BaseCharacter
     }
     protected override void DieLogic()
     {
-        //GameplayManager.OnPlayerDied?.Invoke();
+        GameplayManager.OnPlayerDied?.Invoke();
     }
 }
