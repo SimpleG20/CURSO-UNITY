@@ -12,7 +12,7 @@ public class Gun : BaseWeapon
     private int m_currentAmmo;
     private Quaternion m_gunDirection;
 
-    private void Start()
+    private void Awake()
     {
         m_currentAmmo = m_ammoCapacity;
     }

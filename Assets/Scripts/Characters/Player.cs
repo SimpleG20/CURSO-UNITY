@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,18 +7,36 @@ public class Player : BaseCharacter
     [SerializeField] private PlayerInput m_playerInput;
 
     private int m_currentWeaponIndex;
+    private Vector3 m_scale;
 
     protected override void Setup()
     {
+        Health = 100;
+
+        m_scale = m_Animator.transform.localScale;
+
         m_currentWeaponIndex = 0;
         UpdateCurrentWeapon();
 
-        m_playerInput.actions["Move"].performed += ctx => m_MovementDirection = ctx.ReadValue<Vector2>();
-        m_playerInput.actions["Move"].canceled += ctx => m_MovementDirection = Vector2.zero;
+        m_playerInput.actions["Move"].performed += ctx => HandleOnMovement(ctx.ReadValue<Vector2>());
+        m_playerInput.actions["Move"].canceled += ctx => HandleOnMovement(Vector2.zero);
 
         m_playerInput.actions["Attack"].performed += ctx => Attack();
 
         m_playerInput.actions["ChangeWeapon"].performed += HandleChangeWeapon;
+    }
+    private void HandleOnMovement(Vector2 direction)
+    {
+        m_MovementDirection = direction;
+        if (m_MovementDirection == Vector2.zero)
+        {
+            m_Animator.SetInteger("Speed", 0);
+        }
+        else
+        {
+            m_Animator.transform.localScale = new Vector3(Mathf.Sign(m_MovementDirection.x) * m_scale.x , m_scale.y, m_scale.z);
+            m_Animator.SetInteger("Speed", 1);
+        }
     }
     private void HandleChangeWeapon(InputAction.CallbackContext obj)
     {

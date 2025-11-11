@@ -22,11 +22,13 @@ public class GameplayManager : MonoBehaviour
     private float m_gameplayTimer;
     private bool m_isGameRunning;
 
-    private void Start()
+    private void Awake()
     {
         OnEnemyDied += HandleOnEnemyDied;
         OnPlayerDied += HandleOnPlayerDied;
-
+    }
+    private void Start()
+    {
         m_isGameRunning = true;
         m_player.Initialize();
 
@@ -53,16 +55,14 @@ public class GameplayManager : MonoBehaviour
         if (!m_isGameRunning) return;
         m_isGameRunning = false;
 
-        print("Ended Gameplay");
-
         var enemies = FindObjectsByType<BaseEnemy>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         for (int i = 0; i < enemies.Length; i++)
         {
-            Destroy(enemies[i].gameObject);
+            enemies[i].TakeDamage(1000);
         }
 
         var player = FindFirstObjectByType<Player>();
-        if (player != null) Destroy(player.gameObject);
+        player.TakeDamage(100);
     }
     private void HandleOnEnemyDied()
     {
@@ -95,6 +95,5 @@ public class GameplayManager : MonoBehaviour
             m_enemiesParent
         );
         enemyInstance.Initialize();
-
     }
 }

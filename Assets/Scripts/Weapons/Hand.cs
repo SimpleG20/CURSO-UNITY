@@ -6,6 +6,7 @@ public class Hand : BaseWeapon
     {
         if (Random.Range(0, 2) == 0)
         {
+            m_LastAttackTime = Time.time;
             FindFirstObjectByType<Player>().TakeDamage(m_Damage);
         }
     }

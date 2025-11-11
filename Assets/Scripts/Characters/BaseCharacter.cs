@@ -8,6 +8,8 @@ public abstract class BaseCharacter : MonoBehaviour
 
     [SerializeField] protected float m_Speed;
 
+    [SerializeField] protected Animator m_Animator;
+
     [SerializeField] protected BaseWeapon[] m_Weapons;
 
     protected Vector2 m_MovementDirection;
@@ -57,6 +59,7 @@ public abstract class BaseCharacter : MonoBehaviour
         if (!CanTakeDamage()) return;
 
         Health -= damage;
+        m_Animator.SetTrigger("Hit");
         print($"{Name} took {damage} damage, remaining health: {Health}");
         if (Health <= 0)
         {
@@ -66,8 +69,12 @@ public abstract class BaseCharacter : MonoBehaviour
 
     protected void Die()
     {
+        IsAlive = false;
+
         DieLogic();
-        Destroy(gameObject);
+
+        m_Animator.SetBool("Dead", true);
+        Destroy(gameObject, 5);
     }
     protected abstract void DieLogic();
 }
