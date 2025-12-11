@@ -4,7 +4,7 @@ This project is related to a course designed to teach people how to create simpl
 
 ## About This Course
 
-This repository contains materials and examples for learning Unity game development from the ground up. Whether you're a complete beginner or looking to improve your Unity skills, this course will guide you through the fundamentals of creating games with Unity.
+This repository contains sources and examples for learning Unity game development from the ground up. Whether you're a complete beginner or looking to improve your Unity skills, this course will guide you through the fundamentals of creating games with Unity.
 
 ## What You'll Learn
 
